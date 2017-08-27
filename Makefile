@@ -12,7 +12,10 @@ $LATTICE : $(OBJS)
 lattice.o : $(DEPS) lattice.h  lattice.cpp 
 	$(CXX) $(CXXFLAGS) lattice.cpp
 
-main.o : $(DEPS) lattice.h main.cpp
+streamCompaction.o : $(DEPS) streamCompaction.h  streamCompaction.cpp
+	$(CXX) $(CXXFLAGS) streamCompaction.cpp
+
+main.o : $(DEPS) lattice.h streamCompaction.h main.cpp
 	$(CXX) $(CXXFLAGS) main.cpp
 
 clean:
