@@ -13,6 +13,8 @@
 #include <vector>
 #include "lattice_variables.h"
 #include "lattice.h"
+#include "streamCompaction.h"
+
 
 int main( int argc, char **argv )
 {
@@ -82,6 +84,8 @@ int main( int argc, char **argv )
 
    /*	Close output file	*/
    fclose(lat);
+
+   bond_compaction();
    return 0;
 }
 

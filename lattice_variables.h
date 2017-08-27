@@ -22,3 +22,6 @@ extern int num_bonds;
 extern int dihedrals[MAXDIHEDRALS][4];
 extern int cnt_dihedrals;
 extern int particle_id[LEN];
+
+/*	Arrays to hold Bond Pairs	*/
+extern int p1[LEN][6],p2[LEN][6];
