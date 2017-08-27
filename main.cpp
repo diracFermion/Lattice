@@ -14,12 +14,12 @@
 #include "lattice_variables.h"
 #include "lattice.h"
 
-
+//this is the first change in branch
 int main( int argc, char **argv )
 {
 
    /*	Output File	*/
-   FILE *lat;
+   FILE *lat,*kp;
 
    /*      Character array for directory pathname and filename     */
    char filepath[256];
