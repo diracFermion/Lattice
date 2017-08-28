@@ -49,5 +49,32 @@ for(int j=0;j<LEN;j++)
    return 0;
 }
 
-
+/*	Sorting dihedrals using the 2nd particle	*/
+int insertionSortDihedrals(int num_dihedrals)
+{
+	int tempSorter[4];
+	int k;
+        for (int i=1; i<num_dihedrals; i++)
+        {
+		for(int j=0;j<4;j++)
+		{	
+			tempSorter[j] = dihedrals[i][j];
+		}
+			k = i-1;
+			while (k>=0 && dihedrals[k][1] > tempSorter[1])
+				{
+					for(int j=0;j<4;j++)
+					{
+						dihedrals[k+1][j] = dihedrals[k][j];
+					}
+					//neighborList[i+1] = neighborList[i];
+                                        k = k-1;
+				}
+			for(int j=0;j<4;j++)
+                	{
+                        	dihedrals[k+1][j] = tempSorter[j];
+                	}
+        }
+        return 0;
+}
 
