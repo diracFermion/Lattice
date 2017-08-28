@@ -61,6 +61,8 @@ int main( int argc, char **argv )
 
    /*	Generating the Dihedrals	*/
    generate_dihedrals();
+   /*	Sorting Dihedrals using 2nd particle as pivot	*/
+   insertionSortDihedrals(cnt_dihedrals);
 
    /*	Particle Type ID	*/
    particle_typeid();
