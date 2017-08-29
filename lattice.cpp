@@ -290,7 +290,7 @@ int particle_typeid()
 {
    for(int i=0;i<LEN;i++)
    {
-	if(i%NX==0 || i%NX==NX-1)
+	if(i%NX==0)// || i%NX==NX-1)
 		particle_id[i]=1;
 	else
 		particle_id[i]=0;
