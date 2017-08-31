@@ -26,7 +26,7 @@ int main( int argc, char **argv )
    char filepath[256];
 
    /*      Filepaths for output files      */
-   sprintf(filepath, "lattice.dat");
+   sprintf(filepath, "../Sim_dump/lattice.dat");
    printf("Filename of Lattice Details: %s\n",filepath);
    lat = fopen(filepath, "w");
    if (lat == NULL)
