@@ -13,10 +13,10 @@
 #include "stdint.h"
 
 
-int bond_mat[LEN][LEN];
-int num_bonds = 0;
-int dihedrals[MAXDIHEDRALS][4];
-int cnt_dihedrals=0;
+int bond_mat_full[LEN][LEN];
+int num_bonds_full = 0;
+int dihedrals_full[MAXDIHEDRALS][4];
+int cnt_dihedrals_full=0;
 int particle_id[LEN];
 /*--------------------------------------------------------------------------------------*/
 /*      Function for setting up Initial lattice coordinates                             */
@@ -42,60 +42,60 @@ int initialLatticeStruct(latticeStruct *ip,  int size)
 /*Function for generating the Bond Matrix,Matrix[i][j] = 1,Bond between particles i and j */
 /*----------------------------------------------------------------------------------------*/
 
-int lattice_connectivity()
+int lattice_connectivity(int nx,int ny,int bond_mat) //work here
 {
 
   /* Initializing elements of the Bond Matrix to 0	*/
-  for(int i=0;i<LEN;i++)
+  for(int i=0;i<nx*ny;i++)
   {
-	for(int j=0;j<LEN;j++)
+	for(int j=0;j<nx*ny;j++)
 	{
 		bond_mat[i][j]=0;
 	}
   }
 		
-  for(int i=0;i<LEN;i++)
+  for(int i=0;i<nx*ny;i++)
   {
      /*	EVEN Row	*/
-     if((i/NX)%2==0)
+     if((i/nx)%2==0)
      {
         /*	Left boundary lattice sites	*/
-        if(i%NX==0)
+        if(i%nx==0)
         {
-	   if(i+NX < LEN)
-	      bond_mat[i][i+NX]=1;
-	   if(i-NX >= 0)
-	      bond_mat[i][i-NX]=1;
+	   if(i+nx < nx*ny)
+	      bond_mat[i][i+nx]=1;
+	   if(i-nx >= 0)
+	      bond_mat[i][i-nx]=1;
 	   bond_mat[i][i+1]=1;
 	}
 
 	/*	Right boundary lattice sites     */
-	else if(i%NX==NX-1)
+	else if(i%nx==nx-1)
 	{
-	   if(i+NX<LEN)
-	      bond_mat[i][i+NX]=1;
-	   if(i+NX-1<LEN)
-	      bond_mat[i][i+NX-1]=1;
-	   if(i-NX-1>=0)
-	      bond_mat[i][i-NX-1]=1;
-	   if(i-NX>=0)
-	      bond_mat[i][i-NX]=1;
+	   if(i+nx<nx*ny)
+	      bond_mat[i][i+nx]=1;
+	   if(i+nx-1<nx*ny)
+	      bond_mat[i][i+nx-1]=1;
+	   if(i-nx-1>=0)
+	      bond_mat[i][i-nx-1]=1;
+	   if(i-nx>=0)
+	      bond_mat[i][i-nx]=1;
 	   bond_mat[i][i-1]=1;
 	}
 
         /*	Intermediate lattice sites	*/
         else
         {
-           if(i+NX<LEN)
-              bond_mat[i][i+NX]=1;
-           if(i+NX-1<LEN)
-              bond_mat[i][i+NX-1]=1;
+           if(i+nx<nx*ny)
+              bond_mat[i][i+nx]=1;
+           if(i+nx-1<nx*ny)
+              bond_mat[i][i+nx-1]=1;
            bond_mat[i][i-1]=1;
            bond_mat[i][i+1]=1;
-           if(i-NX-1>=0)
-	       bond_mat[i][i-NX-1]=1;
-	   if(i-NX>=0)
-	       bond_mat[i][i-NX]=1;
+           if(i-nx-1>=0)
+	       bond_mat[i][i-nx-1]=1;
+	   if(i-nx>=0)
+	       bond_mat[i][i-nx]=1;
 	}
       }
 
@@ -103,42 +103,42 @@ int lattice_connectivity()
       else
       {
          /*	Left boundary lattice sites     */
-	 if(i%NX==0)
+	 if(i%nx==0)
 	 {
-	    if(i+NX+1<LEN)
-	       bond_mat[i][i+NX+1]=1;
-	    if(i+NX<LEN)
-	       bond_mat[i][i+NX]=1;
+	    if(i+nx+1<nx*ny)
+	       bond_mat[i][i+nx+1]=1;
+	    if(i+nx<nx*ny)
+	       bond_mat[i][i+nx]=1;
 	    bond_mat[i][i+1]=1;
-	    if(i-NX>=0)
-	       bond_mat[i][i-NX]=1;
-	    if(i-NX+1>=0)
-	       bond_mat[i][i-NX+1]=1;
+	    if(i-nx>=0)
+	       bond_mat[i][i-nx]=1;
+	    if(i-nx+1>=0)
+	       bond_mat[i][i-nx+1]=1;
 	  }
 
 	  /* Right boundary lattice sites     */
-	  else if(i%NX==NX-1)
+	  else if(i%nx==nx-1)
 	  {
-	     if(i+NX < LEN)
-	        bond_mat[i][i+NX]=1;
-             if(i-NX >= 0)
-		bond_mat[i][i-NX]=1;
+	     if(i+nx < nx*ny)
+	        bond_mat[i][i+nx]=1;
+             if(i-nx >= 0)
+		bond_mat[i][i-nx]=1;
 	     bond_mat[i][i-1]=1;
 	  }
 
 	  /*      Intermediate lattice sites      */
 	  else
 	  {
-              if(i+NX+1<LEN)
-                 bond_mat[i][i+NX+1]=1;
-              if(i+NX<LEN)
-                 bond_mat[i][i+NX]=1;
+              if(i+nx+1<nx*ny)
+                 bond_mat[i][i+nx+1]=1;
+              if(i+nx<nx*ny)
+                 bond_mat[i][i+nx]=1;
               bond_mat[i][i-1]=1;
               bond_mat[i][i+1]=1;
-              if(i-NX>=0)
-                 bond_mat[i][i-NX]=1;
-              if(i-NX+1>=0)
-                 bond_mat[i][i-NX+1]=1;
+              if(i-nx>=0)
+                 bond_mat[i][i-nx]=1;
+              if(i-nx+1>=0)
+                 bond_mat[i][i-nx+1]=1;
            }
         }							           
      }
@@ -150,7 +150,7 @@ int lattice_connectivity()
 
 int check_bond_mat()
 {
-   for(int i=0;i<LEN;i++)
+   for(int i=0;i<nx*ny;i++)
    {
 	for(int j=0;j<i;j++)
 	{
@@ -171,7 +171,7 @@ int check_bond_mat()
 /*	Printing the Bond Pairs, no repeats	*/
 int bonds(FILE *fp)
 {
-   for(int i=0;i<LEN;i++)
+   for(int i=0;i<nx*ny;i++)
    {
         for(int j=0;j<i;j++)
         {
@@ -192,78 +192,78 @@ int generate_dihedrals()
    int j=0;
   
    /*      Type I dihedral         */
-   for(int i=0;i<LEN-NX;i++)
+   for(int i=0;i<nx*ny-nx;i++)
    {
 	/*	EVEN Row	*/
-	if((i/NX)%2==0 && i%NX!=NX-1)
+	if((i/nx)%2==0 && i%nx!=nx-1)
 	{
 		dihedrals[cnt_dihedrals][j]=i;j++;
-		dihedrals[cnt_dihedrals][j]=i+NX;j++;
+		dihedrals[cnt_dihedrals][j]=i+nx;j++;
 		dihedrals[cnt_dihedrals][j]=i+1;j++;
-		dihedrals[cnt_dihedrals][j]=i+NX+1;
+		dihedrals[cnt_dihedrals][j]=i+nx+1;
 		cnt_dihedrals++;
 		j=0;
 	}
 	
 	/*	ODD Row		*/
-	if((i/NX)%2==1 && i%NX!=NX-1 && i%NX!=NX-2)
+	if((i/nx)%2==1 && i%nx!=nx-1 && i%nx!=nx-2)
 	{  
                 dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i+NX+1;j++;
+                dihedrals[cnt_dihedrals][j]=i+nx+1;j++;
                 dihedrals[cnt_dihedrals][j]=i+1;j++;
-                dihedrals[cnt_dihedrals][j]=i+NX+2;
+                dihedrals[cnt_dihedrals][j]=i+nx+2;
                 cnt_dihedrals++;
                 j=0;
         }
    }
 
    /*      Type II dihedral         */
-   for(int i=NX;i<LEN;i++)
+   for(int i=nx;i<nx*ny;i++)
    {
         /*      EVEN Row        */
-        if((i/NX)%2==0 && i%NX!=NX-1)
+        if((i/nx)%2==0 && i%nx!=nx-1)
         {
                 dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX;j++;
+                dihedrals[cnt_dihedrals][j]=i-nx;j++;
                 dihedrals[cnt_dihedrals][j]=i+1;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX+1;
+                dihedrals[cnt_dihedrals][j]=i-nx+1;
                 cnt_dihedrals++;
                 j=0;
         }
 
         /*      ODD Row         */
-        if((i/NX)%2==1 && i%NX!=NX-1 && i%NX!=NX-2)
+        if((i/nx)%2==1 && i%nx!=nx-1 && i%nx!=nx-2)
         {
                 dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX+1;j++;
+                dihedrals[cnt_dihedrals][j]=i-nx+1;j++;
                 dihedrals[cnt_dihedrals][j]=i+1;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX+2;
+                dihedrals[cnt_dihedrals][j]=i-nx+2;
                 cnt_dihedrals++;
                 j=0;
         }
    }
 
    /*      Type III dihedral         */
-   for(int i=2*NX;i<LEN;i++)
+   for(int i=2*nx;i<nx*ny;i++)
    {
         /*      EVEN Row        */
-        if((i/NX)%2==0 && i%NX!=0)
+        if((i/nx)%2==0 && i%nx!=0)
         {
                 dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX-1;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX;j++;
-                dihedrals[cnt_dihedrals][j]=i-2*NX;
+                dihedrals[cnt_dihedrals][j]=i-nx-1;j++;
+                dihedrals[cnt_dihedrals][j]=i-nx;j++;
+                dihedrals[cnt_dihedrals][j]=i-2*nx;
                 cnt_dihedrals++;
                 j=0;
         }
 
         /*      ODD Row         */
-        if((i/NX)%2==1 && i%NX!=NX-1)
+        if((i/nx)%2==1 && i%nx!=nx-1)
         {
                 dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX+1;j++;
-                dihedrals[cnt_dihedrals][j]=i-2*NX;
+                dihedrals[cnt_dihedrals][j]=i-nx;j++;
+                dihedrals[cnt_dihedrals][j]=i-nx+1;j++;
+                dihedrals[cnt_dihedrals][j]=i-2*nx;
                 cnt_dihedrals++;
                 j=0;
         }
@@ -301,7 +301,7 @@ int particle_typeid()
 /*	Print particles TypeId		*/
 int out_typeId(FILE *fp)
 {
-   for(int i=0;i<LEN;i++)
+   for(int i=0;i<nx*ny;i++)
    {
 	fprintf(fp,"%u\n",particle_id[i]);
    }
