@@ -55,7 +55,12 @@ int main( int argc, char **argv )
 	}
 	printf("\n");
    }
-*/   
+*/
+   /*   Particle Type ID        */
+   particle_typeid();
+
+   /*	Cull the bonds inside the hole	*/
+   cull_bonds();   
    /*	Checking if Bond Matrix is Symmetric	*/
    check_bond_mat(); 
 
@@ -65,14 +70,21 @@ int main( int argc, char **argv )
    insertionSortDihedrals(cnt_dihedrals);
 
    /*	Particle Type ID	*/
-   particle_typeid();
+//   particle_typeid();
 
    /*	Printing lattice configuration	*/
-   /*	Total Particles		*/
+   /*	Total Particles after culling		*/
+   int num_particles=0;
+   for(int i=0;i<LEN;i++)
+   {
+	if(particle_id[i]!=2)
+		num_particles++;
+   }
    fprintf(lat,"%d\n",LEN);
    /*	Initial Paerticle Position in Flat configuration	*/
    for(int i=0;i<LEN;i++)
    {
+	//if(particle_id[i]!=2)	
         fprintf(lat,"%.8f,%.8f,%.8f\n",h_coords->x[i],h_coords->y[i],h_coords->z[i]);
    }
    /*   Printing the Bond pairs */

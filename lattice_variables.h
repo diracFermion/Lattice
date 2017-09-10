@@ -3,7 +3,8 @@
 #define LEN	NX*NY
 #define a	1
 #define MAXDIHEDRALS	10000
-
+#define STRIP_SIZE	20
+#define PIN4	1
 
 /*	Structure for position coordinates	*/
 struct latticeStruct

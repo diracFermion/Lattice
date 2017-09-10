@@ -168,6 +168,24 @@ int check_bond_mat()
    return 0;
 }
 
+/*	Culling bonds inside the hole	*/
+int cull_bonds()
+{
+   for(int i=0;i<LEN;i++)
+   {
+        for(int j=0;j<i;j++)
+        {
+		if(particle_id[i]==2 || particle_id[j]==2)
+		{
+			bond_mat[i][j]=0;//Bond culled
+			bond_mat[j][i]=0;	
+		}
+	}
+   } 
+   return 0;
+}
+
+
 /*	Printing the Bond Pairs, no repeats	*/
 int bonds(FILE *fp)
 {
@@ -197,23 +215,29 @@ int generate_dihedrals()
 	/*	EVEN Row	*/
 	if((i/NX)%2==0 && i%NX!=NX-1)
 	{
-		dihedrals[cnt_dihedrals][j]=i;j++;
-		dihedrals[cnt_dihedrals][j]=i+NX;j++;
-		dihedrals[cnt_dihedrals][j]=i+1;j++;
-		dihedrals[cnt_dihedrals][j]=i+NX+1;
-		cnt_dihedrals++;
-		j=0;
+		if(particle_id[i]!=2 && particle_id[i+NX]!=2 && particle_id[i+1]!=2 && particle_id[i+NX+1]!=2)
+		{	
+			dihedrals[cnt_dihedrals][j]=i;j++;
+			dihedrals[cnt_dihedrals][j]=i+NX;j++;
+			dihedrals[cnt_dihedrals][j]=i+1;j++;
+			dihedrals[cnt_dihedrals][j]=i+NX+1;
+			cnt_dihedrals++;
+			j=0;
+		}
 	}
 	
 	/*	ODD Row		*/
 	if((i/NX)%2==1 && i%NX!=NX-1 && i%NX!=NX-2)
-	{  
-                dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i+NX+1;j++;
-                dihedrals[cnt_dihedrals][j]=i+1;j++;
-                dihedrals[cnt_dihedrals][j]=i+NX+2;
-                cnt_dihedrals++;
-                j=0;
+	{
+		if(particle_id[i]!=2 && particle_id[i+NX+1]!=2 && particle_id[i+1]!=2 && particle_id[i+NX+2]!=2)
+                {  
+                	dihedrals[cnt_dihedrals][j]=i;j++;
+               		dihedrals[cnt_dihedrals][j]=i+NX+1;j++;
+                	dihedrals[cnt_dihedrals][j]=i+1;j++;
+                	dihedrals[cnt_dihedrals][j]=i+NX+2;
+                	cnt_dihedrals++;
+                	j=0;
+		}
         }
    }
 
@@ -223,23 +247,29 @@ int generate_dihedrals()
         /*      EVEN Row        */
         if((i/NX)%2==0 && i%NX!=NX-1)
         {
-                dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX;j++;
-                dihedrals[cnt_dihedrals][j]=i+1;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX+1;
-                cnt_dihedrals++;
-                j=0;
+		if(particle_id[i]!=2 && particle_id[i-NX]!=2 && particle_id[i+1]!=2 && particle_id[i-NX+1]!=2)
+                {
+                	dihedrals[cnt_dihedrals][j]=i;j++;
+                	dihedrals[cnt_dihedrals][j]=i-NX;j++;
+                	dihedrals[cnt_dihedrals][j]=i+1;j++;
+                	dihedrals[cnt_dihedrals][j]=i-NX+1;
+                	cnt_dihedrals++;
+                	j=0;
+		}
         }
 
         /*      ODD Row         */
         if((i/NX)%2==1 && i%NX!=NX-1 && i%NX!=NX-2)
         {
-                dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX+1;j++;
-                dihedrals[cnt_dihedrals][j]=i+1;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX+2;
-                cnt_dihedrals++;
-                j=0;
+		if(particle_id[i]!=2 && particle_id[i-NX]!=2 && particle_id[i+1]!=2 && particle_id[i-NX+2]!=2)
+                {
+                	dihedrals[cnt_dihedrals][j]=i;j++;
+                	dihedrals[cnt_dihedrals][j]=i-NX+1;j++;
+                	dihedrals[cnt_dihedrals][j]=i+1;j++;
+                	dihedrals[cnt_dihedrals][j]=i-NX+2;
+                	cnt_dihedrals++;
+                	j=0;
+		}
         }
    }
 
@@ -249,28 +279,36 @@ int generate_dihedrals()
         /*      EVEN Row        */
         if((i/NX)%2==0 && i%NX!=0)
         {
-                dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX-1;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX;j++;
-                dihedrals[cnt_dihedrals][j]=i-2*NX;
-                cnt_dihedrals++;
-                j=0;
+		if(particle_id[i]!=2 && particle_id[i-NX-1]!=2 && particle_id[i-NX]!=2 && particle_id[i-2*NX]!=2)
+                {
+                	dihedrals[cnt_dihedrals][j]=i;j++;
+                	dihedrals[cnt_dihedrals][j]=i-NX-1;j++;
+                	dihedrals[cnt_dihedrals][j]=i-NX;j++;
+                	dihedrals[cnt_dihedrals][j]=i-2*NX;
+                	cnt_dihedrals++;
+                	j=0;
+		}
         }
 
         /*      ODD Row         */
         if((i/NX)%2==1 && i%NX!=NX-1)
         {
-                dihedrals[cnt_dihedrals][j]=i;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX;j++;
-                dihedrals[cnt_dihedrals][j]=i-NX+1;j++;
-                dihedrals[cnt_dihedrals][j]=i-2*NX;
-                cnt_dihedrals++;
-                j=0;
+		if(particle_id[i]!=2 && particle_id[i-NX]!=2 && particle_id[i-NX+1]!=2 && particle_id[i-2*NX]!=2)
+                {
+                	dihedrals[cnt_dihedrals][j]=i;j++;
+                	dihedrals[cnt_dihedrals][j]=i-NX;j++;
+                	dihedrals[cnt_dihedrals][j]=i-NX+1;j++;
+                	dihedrals[cnt_dihedrals][j]=i-2*NX;
+                	cnt_dihedrals++;
+                	j=0;
+		}
         }
    }
 
    return 0;
 }	
+
+
 
 /*		Print dihedrals		*/		
 int out_dihedrals(FILE *fp)
@@ -294,13 +332,47 @@ int particle_typeid()
 	//if(i==0 || i==1 || i==NX || i==LEN-1 || i==LEN-2 || i==LEN-NX-1)
 	if(i==0 || i==1 || i==NX || i==LEN-1 || i==LEN-2 || i==LEN-NX-1)
 		particle_id[i]=1;
-	else if(i==NX-1 || i==NX-2 || i==2*NX-1 || i==2*NX-2)
+	else if(PIN4==1 && (i==NX-1 || i==NX-2 || i==2*NX-1 || i==2*NX-2))
 		particle_id[i]=1;
-	else if(i==LEN-NX || i==LEN-NX+1 || i==LEN-2*NX || i==LEN-2*NX+1)
+	else if(PIN4==1 && (i==LEN-NX || i==LEN-NX+1 || i==LEN-2*NX || i==LEN-2*NX+1))
                 particle_id[i]=1;
 	else
 		particle_id[i]=0;
    }
+   
+	if(STRIP_SIZE < NX/2)/* For no hole input stripsize greater than NX/2   */
+        {
+		printf("Generating Hole\n");
+                /*      Generating the inner boundary of the hole, nodes on inner boundary ID is 5      */
+                /*      TOP RIGHT CORNER INNER BOUNDARY         */
+                int top_right = (LEN-1)-(int(2*STRIP_SIZE/sqrt(3))*NX)-STRIP_SIZE;
+                /*      TOP LEFT CORNER INNER BOUNDARY          */
+                int top_left = (LEN-NX)-(int(2*STRIP_SIZE/sqrt(3))*NX)+STRIP_SIZE;
+                /*      BOTTOM RIGHT CORNER INNER BOUNDARY      */
+                int bottom_right = NX-1+(int(2*STRIP_SIZE/sqrt(3))*NX)-STRIP_SIZE;
+                /*      BOTTOM LEFT CORNER INNER BOUNDARY       */
+                int bottom_left = (int(2*STRIP_SIZE/sqrt(3))*NX)+STRIP_SIZE;
+
+                int i = top_right;
+                int j = top_left;
+                int k = 0;
+                while(i>bottom_right)
+                {
+                        i = i-NX;
+                        j = j-NX;
+                        //nodeGroupId[i] = 5;
+                        //nodeGroupId[j] = 5;
+                        k = i-1;
+
+                        /*      Nodes which are removed have ID 2       */
+                        while(k>j && j >= bottom_left+NX)
+                                {
+                                        particle_id[k]=2;
+					printf("%d %d\t",k,particle_id[k]);
+                                	k--;
+                        	}
+                }
+        }
    return 0;
 }	
 
@@ -309,6 +381,7 @@ int out_typeId(FILE *fp)
 {
    for(int i=0;i<LEN;i++)
    {
+//	if(particle_id[i]!=2)
 	fprintf(fp,"%u\n",particle_id[i]);
    }
    return 0;

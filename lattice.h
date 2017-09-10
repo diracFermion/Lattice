@@ -7,4 +7,4 @@ int generate_dihedrals();
 int out_dihedrals(FILE *);
 int particle_typeid();
 int out_typeId(FILE *);
-
+int cull_bonds();
