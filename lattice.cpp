@@ -330,8 +330,10 @@ int particle_typeid()
    {
 //	if(i%NX==0)// || i%NX==NX-1)
 	//if(i==0 || i==1 || i==NX || i==LEN-1 || i==LEN-2 || i==LEN-NX-1)
-	if(i==0 || i==1 || i==NX || i==LEN-1 || i==LEN-2 || i==LEN-NX-1)
+	if(i==0 || i==1 || i==NX)
 		particle_id[i]=1;
+	else if(i==LEN-1 || i==LEN-2 || i==LEN-NX-1)
+		particle_id[i]=3;
 	else if(PIN4==1 && (i==NX-1 || i==NX-2 || i==2*NX-1 || i==2*NX-2))
 		particle_id[i]=1;
 	else if(PIN4==1 && (i==LEN-NX || i==LEN-NX+1 || i==LEN-2*NX || i==LEN-2*NX+1))
