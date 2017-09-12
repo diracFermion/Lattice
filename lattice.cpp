@@ -304,7 +304,10 @@ int particle_typeid()
 	if(i%NX==0)
 		particle_id[i]=1;
 	else if (i%NX==NX-1)
-		particle_id[i]=2;
+	{
+		particle_id[i]=3;
+		printf("particle_id[%d] = %d\n",i,particle_id[i]);
+	}
 	else
                 particle_id[i]=0; 
   }
