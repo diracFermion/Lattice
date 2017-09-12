@@ -353,11 +353,11 @@ int bond_typeId(FILE *fp)
         {
                if(bond_mat[i][j] == 1)
                {
-                        fprintf(fp,"A\n");
+                        fprintf(fp,"0\n");
                }
 	       if(bond_mat[i][j] == 2)
                {
-                        fprintf(fp,"B\n");
+                        fprintf(fp,"1\n");
                }
         }
    }
