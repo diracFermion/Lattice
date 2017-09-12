@@ -13,7 +13,7 @@
 #include "stdint.h"
 
 
-int bond_mat[LEN][LEN];
+int bond_mat[LEN+NY][LEN+NY];
 int num_bonds = 0;
 int dihedrals[MAXDIHEDRALS][4];
 int cnt_dihedrals=0;
@@ -35,6 +35,12 @@ int initialLatticeStruct(latticeStruct *ip,  int size)
         ip->z[i]=0; /*  Starting with flat configuration        */
         //ip->z[NX/2]=grandom(0,ZRAND);//Moving one node randomly
    }
+   for(int i=size;i<size+NY;i++)
+   {
+	ip->x[i] = NX+5;
+	ip->y[i] = (i-size)*sqrt(3)*0.5;
+	ip->z[i] = 0;
+   }
    return 0;
 }
 
@@ -46,9 +52,9 @@ int lattice_connectivity()
 {
 
   /* Initializing elements of the Bond Matrix to 0	*/
-  for(int i=0;i<LEN;i++)
+  for(int i=0;i<LEN+NY;i++)
   {
-	for(int j=0;j<LEN;j++)
+	for(int j=0;j<LEN+NY;j++)
 	{
 		bond_mat[i][j]=0;
 	}
@@ -142,6 +148,16 @@ int lattice_connectivity()
            }
         }							           
      }
+     /*	Adding the bonds between the ribbon right end and the HO	*/
+     int row =0;
+     printf("HO Bond pair's\n");
+     for(int i=LEN;i<LEN+NY;i++)
+     {
+	row = i-LEN;
+	bond_mat[i][(row+1)*NX-1]=2;
+	bond_mat[(row+1)*NX-1][i]=2;
+	printf("%d %d\n",i,(row+1)*NX-1);
+     }
   return 0;
 }
 
@@ -150,16 +166,16 @@ int lattice_connectivity()
 
 int check_bond_mat()
 {
-   for(int i=0;i<LEN;i++)
+   for(int i=0;i<LEN+NY;i++)
    {
 	for(int j=0;j<i;j++)
 	{
 		if(bond_mat[i][j]!=bond_mat[j][i])
 		{
-			printf("At row = %d Col = %d\n",i,j);
+			printf("At row = %d Col = %d bond_mat values are %d %d\n",i,j,bond_mat[i][j],bond_mat[j][i]);
 			print_and_exit("ERROR: Bond Matrix is not Symmetric\n");
 		}
-		if(bond_mat[i][j] == 1)
+		if(bond_mat[i][j] == 1 || bond_mat[i][j] ==2)
 		{
                         num_bonds++;
                 }
@@ -171,11 +187,11 @@ int check_bond_mat()
 /*	Printing the Bond Pairs, no repeats	*/
 int bonds(FILE *fp)
 {
-   for(int i=0;i<LEN;i++)
+   for(int i=0;i<LEN+NY;i++)
    {
         for(int j=0;j<i;j++)
         {
-	       if(bond_mat[i][j] == 1)
+	       if(bond_mat[i][j] == 1 || bond_mat[i][j] == 2)
  	       {   
 			fprintf(fp,"%d,%d\n",i,j);
 	       }
@@ -311,15 +327,39 @@ int particle_typeid()
 	else
                 particle_id[i]=0; 
   }
+   for(int i=LEN;i<LEN+NY;i++)
+   {
+	particle_id[i]=4;
+   }
    return 0;
 }	
 
 /*	Print particles TypeId		*/
 int out_typeId(FILE *fp)
 {
-   for(int i=0;i<LEN;i++)
+   for(int i=0;i<LEN+NY;i++)
    {
 	fprintf(fp,"%u\n",particle_id[i]);
+   }
+   return 0;
+}
+
+/*      Bond TypeID     */
+int bond_typeId(FILE *fp)
+{
+   for(int i=0;i<LEN+NY;i++)
+   {
+        for(int j=0;j<i;j++)
+        {
+               if(bond_mat[i][j] == 1)
+               {
+                        fprintf(fp,"A\n");
+               }
+	       if(bond_mat[i][j] == 2)
+               {
+                        fprintf(fp,"B\n");
+               }
+        }
    }
    return 0;
 }
