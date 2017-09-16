@@ -1,5 +1,5 @@
 #define NX	100
-#define NY	10
+#define NY	11
 #define LEN	NX*NY
 #define a	1
 #define MAXDIHEDRALS	10000

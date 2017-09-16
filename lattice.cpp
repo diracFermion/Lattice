@@ -314,6 +314,11 @@ int particle_typeid()
 	else
                 particle_id[i]=0;//Normal lattice sites 
   }
+  //Backbone of the ribbon excluding two lattice sites at each boundary
+  for(int i=2;i<NX-2;i++)
+  {
+	particle_id[(NY/2)*NX + i]=4;
+  }
    return 0;
 }	
 
