@@ -301,19 +301,18 @@ int particle_typeid()
 	else
 		particle_id[i]=0;
 */
-	if(i%NX==0) //Clamping two columns of lattice sites
+	if(i%NX==0 || i%NX==1) //Clamping two columns of lattice sites on the left
 	{
 		particle_id[i]=1;
-		particle_id[i+1]=1;
-	}
-	else if (i%NX==NX-1)
-	{
-		particle_id[i]=3;
-		particle_id[i-1]=3;
 		printf("particle_id[%d] = %d\n",i,particle_id[i]);
 	}
+	else if (i%NX==NX-1 || i%NX==NX-2) //Two cols lattice sites on the right constrained to move only X
+	{
+		particle_id[i]=3;
+		//printf("particle_id[%d] = %d\n",i,particle_id[i]);
+	}
 	else
-                particle_id[i]=0; 
+                particle_id[i]=0;//Normal lattice sites 
   }
    return 0;
 }	
