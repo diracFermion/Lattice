@@ -301,11 +301,15 @@ int particle_typeid()
 	else
 		particle_id[i]=0;
 */
-	if(i%NX==0)
+	if(i%NX==0) //Clamping two columns of lattice sites
+	{
 		particle_id[i]=1;
+		particle_id[i+1]=1;
+	}
 	else if (i%NX==NX-1)
 	{
 		particle_id[i]=3;
+		particle_id[i-1]=3;
 		printf("particle_id[%d] = %d\n",i,particle_id[i]);
 	}
 	else
