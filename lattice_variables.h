@@ -1,8 +1,8 @@
-#define NX	100
-#define NY	11
+#define NX	101
+#define NY	151
 #define LEN	NX*NY
 #define a	1
-#define MAXDIHEDRALS	10000
+#define MAXDIHEDRALS	100000
 
 
 /*	Structure for position coordinates	*/
