@@ -12,15 +12,15 @@
 #include "stdint.h"
 #include "streamCompaction.h"
 
-int p1[LEN][6],p2[LEN][6];
+int p1[NMAX][6],p2[NMAX][6];
 
 
-int bond_compaction()
+int bond_compaction(int len)
 {
 int l=0;
-for(int j=0;j<LEN;j++)
+for(int j=0;j<len;j++)
 {
-	for(int k=0;k<LEN;k++)
+	for(int k=0;k<len;k++)
 	{
 		if(bond_mat[j][k]==1)
 		{

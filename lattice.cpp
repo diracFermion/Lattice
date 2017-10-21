@@ -13,11 +13,11 @@
 #include "stdint.h"
 
 
-int bond_mat[LEN][LEN];
+int bond_mat[NMAX][NMAX];
 int num_bonds = 0;
 int dihedrals[MAXDIHEDRALS][4];
 int cnt_dihedrals=0;
-int particle_id[LEN];
+int particle_id[NMAX];
 /*--------------------------------------------------------------------------------------*/
 /*      Function for setting up Initial lattice coordinates                             */
 /*--------------------------------------------------------------------------------------*/
