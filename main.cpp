@@ -36,7 +36,7 @@ int main( int argc, char **argv )
        sscanf(argv[4],"%d",&RUN);
        break;
      default:
-       print_and_exit("Usage: %s NX NY KAPPA RUN STEPS\n",
+       print_and_exit("Usage: %s NX NY KAPPA RUN\n",
            argv[0]);
    }
    LEN = NX * NY;
@@ -107,7 +107,7 @@ int main( int argc, char **argv )
 	   /*	Printing lattice configuration	*/
 	   /*	Total Particles		*/
 	   fprintf(lat,"%d\n",LEN);
-	   /*	Initial Paerticle Position in Flat configuration	*/
+	   /*	Particle Position in THERMALIZED configuration	*/
 	   for(int i=0;i<LEN;i++)
 	   {
 		fprintf(lat,"%.8f,%.8f,%.8f\n",h_coords->x[i],h_coords->y[i],h_coords->z[i]);

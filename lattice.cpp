@@ -150,6 +150,7 @@ int lattice_connectivity()
 
 int check_bond_mat()
 {
+   num_bonds = 0;
    for(int i=0;i<LEN;i++)
    {
 	for(int j=0;j<i;j++)
@@ -304,7 +305,7 @@ int particle_typeid()
 	if(i%NX==0 || i%NX==1) //Clamping two columns of lattice sites on the left
 	{
 		particle_id[i]=1;
-		printf("particle_id[%d] = %d\n",i,particle_id[i]);
+		//printf("particle_id[%d] = %d\n",i,particle_id[i]);
 	}
 	else if (i%NX==NX-1 || i%NX==NX-2) //Two cols lattice sites on the right constrained to move only X
 	{
