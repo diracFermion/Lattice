@@ -1,2 +1,5 @@
-LATTICE
 *.o
+LATTICE
+THERMAL
+*.o
+
