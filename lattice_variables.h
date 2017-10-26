@@ -2,7 +2,7 @@
 //#define NY	51
 //#define LEN	NX*NY
 #define a	1
-#define MAXDIHEDRALS	10000
+#define MAXDIHEDRALS	50000
 #define NMAX	20000	
 
 /*	Structure for position coordinates	*/

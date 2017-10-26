@@ -190,6 +190,7 @@ int bonds(FILE *fp)
 /*----------------------------------------------*/
 int generate_dihedrals()
 {
+   cnt_dihedrals=0;
    int j=0;
   
    /*      Type I dihedral         */
