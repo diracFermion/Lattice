@@ -1,23 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <cstdlib>
+//#include <cstdlib>
 #include <math.h>
 #include <string.h>
 #include <time.h>
-#include <limits>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <iomanip>
-#include <vector>
+//#include <limits>
+//#include <iostream>
+//#include <fstream>
+//#include <string>
+//#include <sstream>
+//#include <iomanip>
+//#include <vector>
 #include "lattice_variables.h"
 #include "lattice.h"
 #include "streamCompaction.h"
 
+int NX,NY,LEN;
 
 int main( int argc, char **argv )
 {
+
+   switch (argc){
+     case 3:
+       sscanf(argv[1],"%d",&NX);
+       sscanf(argv[2],"%d",&NY);
+       break;
+     default:
+       print_and_exit("Usage: %s NX NY\n",argv[0]);
+   }
+
+   LEN = NX*NY;
 
    /*	Output File	*/
    FILE *lat;
@@ -27,8 +39,8 @@ int main( int argc, char **argv )
 
    /*      Filepaths for output files      */
    //sprintf(filepath, "../Sim_dump/lattice.dat");
-   printf("Enter path where the lattice.dat file will be written\n");
-   sprintf(filepath,argv[1]);
+   //printf("Enter path where the lattice.dat file will be written\n");
+   sprintf(filepath,"../Sim_dump_ribbon/lattice_L%d_W%d.dat",NX,NY);
    printf("Filename of Lattice Details: %s\n",filepath);
    lat = fopen(filepath, "w");
    if (lat == NULL)

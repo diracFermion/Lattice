@@ -12,7 +12,7 @@
 #include "stdint.h"
 #include "streamCompaction.h"
 
-int p1[LEN][6],p2[LEN][6];
+int p1[NMAX][6],p2[NMAX][6];
 
 
 int bond_compaction()

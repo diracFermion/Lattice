@@ -1,27 +1,30 @@
-#define NX	101
-#define NY	151
-#define LEN	NX*NY
+//#define NX	101
+//#define NY	41
+//#define LEN	NX*NY
 #define a	1
+#define NMAX	20000
 #define MAXDIHEDRALS	100000
 
+
+extern int NX,NY,LEN;
 
 /*	Structure for position coordinates	*/
 struct latticeStruct
 {
-    float x[LEN];
-    float y[LEN];
-    float  z[LEN];
+    float x[NMAX];
+    float y[NMAX];
+    float  z[NMAX];
 };
 
 /*----------------------------------------------------------------------*/
 /*		Bond Matrix LEN x LEN, Symmetric Matrix			*/	
 /*	 	Matrix[i][j] = 1 , Bond between particles i and j	*/
 /*----------------------------------------------------------------------*/
-extern int bond_mat[LEN][LEN];
+extern int bond_mat[NMAX][NMAX];
 extern int num_bonds;
 extern int dihedrals[MAXDIHEDRALS][4];
 extern int cnt_dihedrals;
-extern int particle_id[LEN];
+extern int particle_id[NMAX];
 
 /*	Arrays to hold Bond Pairs	*/
-extern int p1[LEN][6],p2[LEN][6];
+extern int p1[NMAX][6],p2[NMAX][6];
