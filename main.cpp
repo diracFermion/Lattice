@@ -40,6 +40,7 @@ int main( int argc, char **argv )
            argv[0]);
    }
    LEN = NX * NY;
+   int num_nodes; //Num lattice sites to be read from thermalPosFrame.bin file
 
    /*      Filepaths for output files      */
    //sprintf(filepath, "../Sim_dump/lattice.dat");
@@ -47,7 +48,7 @@ int main( int argc, char **argv )
    //sprintf(filepath,argv[1]);
    for(int run=1;run<=RUN;run++)
    {
-	   sprintf(filepath,"../Sim_dump_ribbon/L%d/W%d/k%.1f/r%d/lattice.dat",NX,NY,KAPPA,run);
+	   sprintf(filepath,"../Sim_dump_ribbon/L%d/W%d/k%.1f/r%d/lattice_thermal.dat",NX,NY,KAPPA,run);
 	   printf("Filename of Lattice Details: %s\n",filepath);
 	   lat = fopen(filepath, "w");
 	   if (lat == NULL)
@@ -63,8 +64,12 @@ int main( int argc, char **argv )
 		print_and_exit("Could Not Open File to write thermalised position data");
 	   }
 	   /* Reading binary file with thermalized frame position data	*/
-	   fread(position,sizeof(position),1,therm);
-
+	   fread(&num_nodes,sizeof(int),1,therm);
+	   fread(position,sizeof(double),LEN,therm);
+	   
+	   /*	Check if the file read has same number of nodes as the system being processed	*/
+	   if(LEN != num_nodes)
+		print_and_exit("Total nodes in thermalPosFrame.bin does NOT match LEN from current system parameters");
 
 	   /*      Byte size of structures         */
 	   size_t nBytes = sizeof(latticeStruct); 
